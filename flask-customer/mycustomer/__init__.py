@@ -1,11 +1,13 @@
 import os
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
 
 
 def create_app(test_config=None):
     # tạo app 
     app = Flask(__name__, instance_relative_config=True)
+    Bootstrap(app)
     app.config.from_mapping(
         SECRET_KEY='my-secret-key',
         DATABASE=os.path.join(app.instance_path, 'mycustomer.sqlite'),
@@ -31,5 +33,8 @@ def create_app(test_config=None):
 
     from . import db
     db.init_app(app)
+
+    from . import customer
+    app.register_blueprint(customer.bp)
 
     return app
