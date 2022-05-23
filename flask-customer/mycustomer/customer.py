@@ -1,4 +1,4 @@
-import functools
+from werkzeug.exceptions import abort
 
 # import các mod cần thiết cho 1 blueprint cơ bản:
 from flask import (
@@ -37,3 +37,16 @@ def create():
             return redirect(url_for('customer.view', id=cur.lastrowid))
 
     return render_template('customer/create.html')
+
+@bp.route('/<int:id>', methods=('GET',))
+def view(id):
+    customer = get_db().execute(
+        'SELECT * FROM customer'
+        ' WHERE id = ?',
+        (id,)
+    ).fetchone()
+
+    if customer is None:
+        abort(404, f"customer id {id} doesn't exist.")
+
+    return render_template('customer/view.html', customer=customer)
