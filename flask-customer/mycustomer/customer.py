@@ -50,3 +50,12 @@ def view(id):
         abort(404, f"customer id {id} doesn't exist.")
 
     return render_template('customer/view.html', customer=customer)
+
+# route index, duoc truy cap qua path "customer/"
+@bp.route('/', methods=('GET', 'POST'))
+def index():
+    customer_list = get_db().execute(
+        'SELECT * FROM customer'
+    ).fetchall()
+
+    return render_template('customer/index.html', customer_list=customer_list)
