@@ -46,10 +46,16 @@ def view(id):
         (id,)
     ).fetchone()
 
+    # get all invoices
+    invoices = get_db().execute(
+        'SELECT * FROM invoice WHERE customer_id = ?',
+        (id,)
+    ).fetchall()
+
     if customer is None:
         abort(404, f"customer id {id} doesn't exist.")
 
-    return render_template('customer/view.html', customer=customer)
+    return render_template('customer/view.html', customer=customer, invoices=invoices)
 
 # route index, duoc truy cap qua path "customer/"
 @bp.route('/', methods=('GET', 'POST'))
@@ -59,3 +65,8 @@ def index():
     ).fetchall()
 
     return render_template('customer/index.html', customer_list=customer_list)
+
+def list_customer():
+    return get_db().execute(
+        'SELECT * FROM customer'
+    ).fetchall()

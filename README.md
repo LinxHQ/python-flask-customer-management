@@ -16,4 +16,11 @@ Lệnh start:
 
 ```
 sqlite_web instance/mycustomer.sqlite 
+
+```
+
+## Các thư viện khác 
+
+```
+pip install Flask-Datepicker
 ```
